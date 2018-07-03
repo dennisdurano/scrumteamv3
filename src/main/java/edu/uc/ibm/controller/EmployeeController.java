@@ -35,8 +35,10 @@ public class EmployeeController {
 	@RequestMapping("/updateemployee")
 	public String updateEmployee(@RequestParam String idno,@RequestParam String familyname,@RequestParam String givenname,@RequestParam String position,@RequestParam String salary) {
 		Employee emp=emp_service.updateEmployee(idno, familyname, givenname, position, salary);
+		System.out.println(emp);
 		return emp.toString();
 	}
+	
 	
 	@RequestMapping("/deleteemployee")
 	public String deleteEmployee(String idno) {
@@ -49,7 +51,7 @@ public class EmployeeController {
 		emp_service.deleteAll();
 	}
 	
-	@RequestMapping("/findposition")
+	@RequestMapping("/findbyposition")
 	public List<Employee>findAllEmployeeByPosition(@RequestParam String position){
 		return emp_service.findAllEmployeeByPosition(position);
 	}

@@ -8,11 +8,10 @@ public class TeamMember extends Employee {
 		super(idno, familyname, givenname, position, salary);
 		this.role = role;
 	}
-	
+		
 	public TeamMember(String idno) {
 		super(idno);
 	}
-	
 	
 	public TeamMember() {
 		super();
@@ -24,6 +23,20 @@ public class TeamMember extends Employee {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+	
+	public boolean equals(Object obj) {
+		TeamMember m=null;
+		if(obj instanceof TeamMember) {
+			m=(TeamMember)obj;
+			return this.getIdno()==m.getIdno();
+		}
+		return false;
+	}
+	
+	
+	public String toString() {
+		return super.toString()+role;
 	}
 	
 }

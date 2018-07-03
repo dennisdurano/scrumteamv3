@@ -1,5 +1,6 @@
 package edu.uc.ibm.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ public class ScrumTeamController {
 	
 	@Autowired
 	private ScrumTeamService scrum_service;
+	@Autowired
 	private EmployeeService emp_service;
 	
 	@RequestMapping("/createteam")
@@ -37,6 +39,11 @@ public class ScrumTeamController {
 	}
 	
 	
+	@RequestMapping("/updateteam")
+	public String updateTeam( @RequestParam String scrumTeamId, @RequestParam String scrumTeamName,  @RequestParam String startDate, @RequestParam String projectName) {
+		return scrum_service.update(scrumTeamId, scrumTeamName, startDate, projectName).toString();
+	}
+	
 	
 	@RequestMapping("/getallscrumteam")
 	public List<ScrumTeam> getall(){
@@ -48,29 +55,28 @@ public class ScrumTeamController {
 		scrum_service.deleteAll();
 	}
 	
-	
-	
 	@RequestMapping("/addmember")
 	public String addMember(@RequestParam String scrumTeamId,@RequestParam String idno,@RequestParam String role) {
 		ScrumTeam st=scrum_service.findScrumTeamById(scrumTeamId);
 		Employee emp=emp_service.findEmployeeByIdno(idno);
 		List<TeamMember> members=st.getProjectTeam();
-			
+		
 		TeamMember member=new TeamMember(emp.getIdno(),emp.getFamilyname(),emp.getGivenname(),emp.getPosition(),emp.getSalary(),role);
+		
+		if(members==null) members=new ArrayList<TeamMember>();
 		members.add(member);
 		
 		scrum_service.update(st.getScrumTeamId(), st.getScrumTeamName(), st.getStartDate(), st.getProjectName(),members);
-		return member+" Added to Team "+st.getScrumTeamName();		
+		return member.toString()+" Added to Team "+st.getScrumTeamName();		
 	}
 	
-	@RequestMapping("/removemember")
-	public String removeMember(@RequestParam String scrumTeamId,@RequestParam String idno) {
+	@RequestMapping("/removememberbyindex")
+	public String removeMember(@RequestParam String scrumTeamId,@RequestParam int index) {
 		ScrumTeam st=scrum_service.findScrumTeamById(scrumTeamId);
 		List<TeamMember> members=st.getProjectTeam();
-		    Employee emp=emp_service.findEmployeeByIdno(idno);
-			members.remove(new TeamMember(emp.getIdno()));
+			TeamMember member=members.remove(index);
 			scrum_service.update(st.getScrumTeamId(), st.getScrumTeamName(), st.getStartDate(), st.getProjectName(),members);
-		return emp.toString()+"is Removed from Team "+st.getScrumTeamName();
+		return "Removed Member :"+member.getFamilyname()+","+member.getGivenname()+" from ScrumTeam :"+st.getScrumTeamName();
 	}
 	
 		
@@ -87,6 +93,5 @@ public class ScrumTeamController {
 			scrum_service.update(st.getScrumTeamId(), st.getScrumTeamName(), st.getStartDate(), st.getProjectName(),st.getProjectTeam());
 		return "All Members at team :"+st.getProjectName()+" are removed";
 	}
-	
 	
 }

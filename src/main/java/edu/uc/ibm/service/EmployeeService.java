@@ -14,7 +14,6 @@ public class EmployeeService {
 	@Autowired
 	private EmployeeRepository emp_repo;
 	
-	
 	public Employee create(String idno,String familyname,String givenname,String position,String salary) {
 		return emp_repo.save(new Employee(idno,familyname,givenname,position,salary));
 	}
@@ -26,7 +25,6 @@ public class EmployeeService {
 	public Employee findEmployeeByIdno(String idno) {
 		return emp_repo.findByIdno(idno);
 	}
-	
 	
 	public void deleteAll() {
 		emp_repo.deleteAll();
@@ -42,7 +40,7 @@ public class EmployeeService {
 	}
 	
 	public Employee updateEmployee(String idno,String familyname,String givenname,String position,String salary) {
-		Employee emp=emp_repo.findByIdno(idno);
+		Employee emp=emp_repo.findByIdno(idno);	
 		emp.setFamilyname(familyname);
 		emp.setGivenname(givenname);
 		emp.setPosition(position);

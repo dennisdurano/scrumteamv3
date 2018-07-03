@@ -1,6 +1,0 @@
-from java:8
-volume /tmp
-add target/scrumteamv2*.jar scrumteamv2.jar
-run sh -c 'touch/scrumteamv2.jar'
-env java_opts='Xmx256m -Xms128m'
-entrypoint ["sh","c","java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar/scrumteamv2.jar"]
